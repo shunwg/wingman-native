@@ -14,6 +14,7 @@ import {
   AtkinsonHyperlegible_700Bold,
 } from '@expo-google-fonts/atkinson-hyperlegible';
 import { RootNavigator } from './src/navigation/RootNavigator';
+import { PrivacyProvider } from './src/state/privacy';
 import { colors } from './src/design/tokens';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
@@ -31,11 +32,13 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <View style={{ flex: 1, backgroundColor: colors.canvas }} onLayout={onLayout}>
-        <NavigationContainer>
-          <RootNavigator />
-        </NavigationContainer>
-      </View>
+      <PrivacyProvider>
+        <View style={{ flex: 1, backgroundColor: colors.canvas }} onLayout={onLayout}>
+          <NavigationContainer>
+            <RootNavigator />
+          </NavigationContainer>
+        </View>
+      </PrivacyProvider>
     </SafeAreaProvider>
   );
 }

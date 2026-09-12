@@ -7,12 +7,34 @@ import { ChevronIcon } from '../../design/icons';
 import { colors, radius, type } from '../../design/tokens';
 import { PEOPLE, personGlow, personPhotos, type PersonId } from '../../data/people';
 import { LENSES } from '../../data/journey';
+import { usePrivacy } from '../../state/privacy';
 
 type Props = TabScreenProps<'Discover'>;
+
+const INSEAD_IDS = LENSES.find((l) => l.key === 'insead')!.ids;
 
 export function DiscoverScreen({ navigation }: Props) {
   const [active, setActive] = useState(LENSES[0]!.key);
   const lens = LENSES.find((l) => l.key === active)!;
+  const { toggles } = usePrivacy();
+
+  /*
+   * "Women only" and "My circles only" on the Privacy screen used to be
+   * cosmetic — flipping them changed nothing here. This is the fix: the two
+   * settings that describe who you see (as opposed to "Verified people only"
+   * and "Listed on trips", which describe how *others* find *you*, and have
+   * no data in this seed cast to filter on) now actually narrow the board,
+   * symmetric with how the real settings would work both ways.
+   *
+   * There is no `gender` field on `Person` — `pronoun` is the closest proxy
+   * this data model has, so "woman" reads as `pronoun === 'her'`.
+   */
+  const visibleIds = lens.ids.filter(
+    (id) =>
+      (!toggles.women || PEOPLE[id].pronoun === 'her') &&
+      (!toggles.circles || INSEAD_IDS.includes(id)),
+  );
+  const hiddenCount = lens.ids.length - visibleIds.length;
 
   return (
     <View style={styles.screen}>
@@ -46,10 +68,15 @@ export function DiscoverScreen({ navigation }: Props) {
       </ScrollView>
 
       <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
-        {lens.ids.map((id) => (
+        {visibleIds.map((id) => (
           <DiscoverRow key={id} id={id} onPress={() => navigation.navigate('Person', { personId: id })} />
         ))}
         <Text style={[type.label, styles.note]}>{lens.note}</Text>
+        {hiddenCount > 0 && (
+          <Text style={[type.label, styles.note]}>
+            {hiddenCount} more hidden by your privacy settings.
+          </Text>
+        )}
       </ScrollView>
     </View>
   );

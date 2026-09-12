@@ -11,6 +11,12 @@ type Props = StackScreenProps<'Chat'>;
 
 type Msg = { id: string; kind: 'me' | 'them' | 'sys' | 'proposal'; text?: string };
 
+/** The two meeting-point options "Suggest another" cycles between — both public ground. */
+const PROPOSALS = [
+  { time: '17:25', timeNote: 'after bags', place: 'Taxi rank, Terminal 3. Public ground.' },
+  { time: '17:45', timeNote: 'after bags, a bit later', place: 'Coffee kiosk, Terminal 3 arrivals. Public ground.' },
+];
+
 const INITIAL: Msg[] = [
   { id: '1', kind: 'sys', text: 'You both said yes. Seat and gate are now shared.' },
   { id: '2', kind: 'me', text: 'Landing the same time, headed the same way. Share a cab into town?' },
@@ -25,6 +31,8 @@ export function ChatScreen({ navigation }: Props) {
   const [confirmed, setConfirmed] = useState(false);
   const [added, setAdded] = useState(false);
   const [draft, setDraft] = useState('');
+  const [proposalIndex, setProposalIndex] = useState(0);
+  const proposal = PROPOSALS[proposalIndex]!;
   const listRef = useRef<FlatList<Msg>>(null);
 
   const send = () => {
@@ -68,11 +76,11 @@ export function ChatScreen({ navigation }: Props) {
               <View style={styles.proposal}>
                 <Text style={[type.small, { color: colors.trust, fontWeight: '700' }]}>Confirmed</Text>
                 <Text style={styles.propTime}>
-                  17:25 <Text style={styles.propTimeSmall}>Tomorrow</Text>
+                  {proposal.time} <Text style={styles.propTimeSmall}>Tomorrow</Text>
                 </Text>
                 <View style={styles.propWhere}>
                   <PinIcon size={15} color={colors.trust} />
-                  <Text style={[type.small, { color: colors.muted }]}>Taxi rank, Terminal 3, Changi</Text>
+                  <Text style={[type.small, { color: colors.muted }]}>{proposal.place}</Text>
                 </View>
                 <Pressable onPress={() => setAdded(true)} style={styles.addCalBtn}>
                   <CalendarIcon size={18} color={colors.ink} />
@@ -84,17 +92,21 @@ export function ChatScreen({ navigation }: Props) {
               <View style={styles.proposal}>
                 <Text style={[type.small, { color: colors.muted }]}>Jonas suggested</Text>
                 <Text style={styles.propTime}>
-                  17:25 <Text style={styles.propTimeSmall}>after bags</Text>
+                  {proposal.time} <Text style={styles.propTimeSmall}>{proposal.timeNote}</Text>
                 </Text>
                 <View style={styles.propWhere}>
                   <PinIcon size={15} color={colors.trust} />
-                  <Text style={[type.small, { color: colors.muted }]}>Taxi rank, Terminal 3. Public ground.</Text>
+                  <Text style={[type.small, { color: colors.muted }]}>{proposal.place}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', gap: 8, marginTop: 12 }}>
                   <Button style={{ flex: 1, minHeight: 42 }} onPress={() => setConfirmed(true)}>
                     Accept
                   </Button>
-                  <Button variant="ghost" style={{ flex: 1, minHeight: 42 }}>
+                  <Button
+                    variant="ghost"
+                    style={{ flex: 1, minHeight: 42 }}
+                    onPress={() => setProposalIndex((i) => (i + 1) % PROPOSALS.length)}
+                  >
                     Suggest another
                   </Button>
                 </View>

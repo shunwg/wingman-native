@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { StackScreenProps } from '../../navigation/types';
 import { BackIcon, CheckIcon, EyeIcon, HandIcon } from '../../design/icons';
 import { colors, radius, type } from '../../design/tokens';
+import { usePrivacy } from '../../state/privacy';
 
 type Props = StackScreenProps<'Privacy'>;
 
@@ -14,8 +14,7 @@ const RUNGS = [
 ];
 
 export function PrivacyScreen({ navigation }: Props) {
-  const [toggles, setToggles] = useState({ verified: true, women: false, circles: false, listed: true });
-  const toggle = (k: keyof typeof toggles) => setToggles((t) => ({ ...t, [k]: !t[k] }));
+  const { toggles, toggle } = usePrivacy();
 
   return (
     <View style={styles.screen}>

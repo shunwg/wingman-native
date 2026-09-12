@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { TabScreenProps } from '../../navigation/types';
@@ -9,14 +10,27 @@ import { MY_JOURNEY, FONTAINEBLEAU_TRIP } from '../../data/journey';
 type Props = TabScreenProps<'Trips'>;
 
 export function TripsScreen({ navigation }: Props) {
+  const [addNote, setAddNote] = useState(false);
+
   return (
     <View style={styles.screen}>
       <SafeAreaView edges={['top']} style={styles.head}>
         <Text style={[type.d2, { color: colors.ink }]}>Trips</Text>
-        <View style={styles.addBtn}>
+        <Pressable
+          onPress={() => setAddNote(true)}
+          style={({ pressed }) => [styles.addBtn, pressed && { transform: [{ scale: 0.96 }] }]}
+        >
           <PlusIcon size={18} />
-        </View>
+        </Pressable>
       </SafeAreaView>
+
+      {addNote && (
+        <Pressable onPress={() => setAddNote(false)} style={styles.addNote}>
+          <Text style={[type.small, { color: colors.muted }]}>
+            Adding a new trip is not part of this preview yet. Tap to dismiss.
+          </Text>
+        </Pressable>
+      )}
 
       <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
         <TripCard
@@ -78,7 +92,7 @@ export function TripsScreen({ navigation }: Props) {
           </View>
           <ChevronIcon size={16} />
         </Pressable>
-        <Pressable style={styles.ecard}>
+        <Pressable onPress={() => navigation.navigate('Person', { personId: 'jonas' })} style={styles.ecard}>
           <View style={styles.crest}>
             <Text style={{ fontFamily: type.d3.fontFamily, fontWeight: '300', fontSize: 22, color: '#fff' }}>I</Text>
           </View>
@@ -173,6 +187,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  addNote: {
+    marginHorizontal: 20,
+    marginBottom: 8,
+    padding: 12,
+    borderRadius: radius.md,
+    backgroundColor: colors.surface,
   },
   tcard: { marginHorizontal: 20, marginTop: 12, borderRadius: radius.md, overflow: 'hidden', backgroundColor: colors.surface },
   tcardPh: { height: 150 },
