@@ -2,17 +2,16 @@ import { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '../../navigation/types';
+import type { StackScreenProps } from '../../navigation/types';
 import { Button, Pill } from '../../design/components';
-import { BackIcon, CarIcon, CheckIcon, LockIcon, MoreIcon, PinIcon, PlaneIcon, UsersIcon } from '../../design/icons';
+import { BackIcon, CarIcon, CupIcon, LockIcon, MoreIcon, PinIcon, PlaneIcon, UsersIcon } from '../../design/icons';
 import { colors, type } from '../../design/tokens';
 import { PEOPLE, personPhotos } from '../../data/people';
 import { HelloSheet } from '../../design/components/HelloSheet';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Person'>;
+type Props = StackScreenProps<'Person'>;
 
-const REASON_ICON = { plane: PlaneIcon, pin: PinIcon, users: UsersIcon, car: CarIcon };
+const REASON_ICON = { plane: PlaneIcon, pin: PinIcon, users: UsersIcon, car: CarIcon, cup: CupIcon };
 
 export function PersonScreen({ route, navigation }: Props) {
   const person = PEOPLE[route.params.personId];
@@ -87,10 +86,7 @@ export function PersonScreen({ route, navigation }: Props) {
         visible={sheetOpen}
         onClose={() => setSheetOpen(false)}
         personName={person.name}
-        onSend={() => {
-          setSheetOpen(false);
-          navigation.navigate('Moment');
-        }}
+        onSend={() => setSheetOpen(false)}
       />
     </View>
   );

@@ -59,6 +59,11 @@ export const airportPhotos = {
     jewelStation: require('../../assets/photos/airports/SIN/jewel-station.jpg'),
     marinaBaySkyline: require('../../assets/photos/airports/SIN/marina-bay-skyline.jpg'),
   },
+  CDG: {
+    terminal2eWalkway: require('../../assets/photos/airports/CDG/terminal-2e-walkway.jpg'),
+    fontainebleauChateau: require('../../assets/photos/airports/CDG/fontainebleau-chateau.jpg'),
+    fontainebleauForestRoad: require('../../assets/photos/airports/CDG/fontainebleau-forest-road.jpg'),
+  },
 } as const;
 
 export type AirportCode = keyof typeof airportPhotos;

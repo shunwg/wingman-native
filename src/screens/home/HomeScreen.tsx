@@ -1,16 +1,15 @@
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '../../navigation/types';
-import { Avatar, Button, Card, Pill, TabBar } from '../../design/components';
-import { CarIcon, ChevronIcon } from '../../design/icons';
-import { colors, radius, type } from '../../design/tokens';
+import type { TabScreenProps } from '../../navigation/types';
+import { Avatar, Button, Card, Pill } from '../../design/components';
+import { ChevronIcon } from '../../design/icons';
+import { colors, type } from '../../design/tokens';
 import { stockPhotos } from '../../data/photos';
 import { PEOPLE, personGlow, personPhotos } from '../../data/people';
 import { MY_JOURNEY } from '../../data/journey';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+type Props = TabScreenProps<'Home'>;
 
 export function HomeScreen({ navigation }: Props) {
   const jonas = PEOPLE.jonas;
@@ -118,7 +117,6 @@ export function HomeScreen({ navigation }: Props) {
           not us.
         </Text>
       </ScrollView>
-      <TabBar active="Home" />
     </View>
   );
 }

@@ -3,15 +3,14 @@ import { Animated, Image, Pressable, StyleSheet, Text, View } from 'react-native
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Circle, Path } from 'react-native-svg';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '../../navigation/types';
+import type { StackScreenProps } from '../../navigation/types';
 import { Button } from '../../design/components';
 import { BackIcon, CarIcon } from '../../design/icons';
 import { colors, type } from '../../design/tokens';
 import { airportPhotos } from '../../data/photos';
 import { MOMENT } from '../../data/journey';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Moment'>;
+type Props = StackScreenProps<'Moment'>;
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
@@ -110,7 +109,7 @@ export function MomentScreen({ navigation }: Props) {
         </Animated.View>
 
         <Animated.View style={rise(cta)}>
-          <Button variant="onPhoto" onPress={() => navigation.navigate('Home')}>
+          <Button variant="onPhoto" onPress={() => navigation.navigate('Chat')}>
             Open the chat
           </Button>
           <View style={{ height: 8 }} />

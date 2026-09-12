@@ -29,3 +29,32 @@ export const MOMENT = {
   ],
   meetNote: 'Taxi rank, Terminal 3. About 25 minutes together.',
 };
+
+/** The second trip on the Trips screen — the INSEAD Fontainebleau weekend. */
+export const FONTAINEBLEAU_TRIP = {
+  from: 'OSL',
+  to: 'CDG',
+  flightNo: 'SK1732',
+  landsLabel: 'lands 18:40',
+  stayLabel: 'Campus weekend, two nights',
+  city: 'Fontainebleau',
+  seatsLeft: 1,
+  totalSeats: 3,
+  costPerHead: 50,
+  costTotal: 150,
+  pickup: 'Taxi rank, Terminal 2E. About 55 minutes to campus, forest roads most of the way.',
+};
+
+/** Discover's lens chips — grouping the seed cast by why they surface. */
+export const LENSES: {
+  key: string;
+  label: string;
+  ids: import('./people').PersonId[];
+  note: string;
+}[] = [
+  { key: 'flight', label: 'Same flight', ids: ['jonas', 'mira', 'lucas'], note: 'A few people on this flight are hidden from you by their settings.' },
+  { key: 'airport', label: 'Same terminal', ids: ['hugo', 'priya'], note: 'Omar is connecting through Terminal 5 with 85 minutes. Not enough for a coffee, so he is not shown.' },
+  { key: 'city', label: 'Singapore this week', ids: ['ayla', 'ingrid', 'nina', 'sofia', 'tobias', 'daniel', 'theo', 'marek'], note: 'Ordered by overlap. Nobody is scored where you can see it.' },
+  { key: 'insead', label: 'INSEAD', ids: ['amelie', 'jonas'], note: 'Reunion week. Only members who chose to show the badge appear here.' },
+  { key: 'gridweek', label: 'Grid Week', ids: ['elin', 'jonas'], note: 'This circle closes on the 6th. After that it matches nobody.' },
+];

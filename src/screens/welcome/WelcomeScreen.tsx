@@ -1,13 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { Animated, Image, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '../../navigation/types';
+import type { StackScreenProps } from '../../navigation/types';
 import { Button } from '../../design/components';
 import { colors, duration, easing, type } from '../../design/tokens';
 import { stockPhotos } from '../../data/photos';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Welcome'>;
+type Props = StackScreenProps<'Welcome'>;
 
 /**
  * The one screen that gets a slow photo settle on mount — the web app's
@@ -65,10 +64,10 @@ export function WelcomeScreen({ navigation }: Props) {
           at the gate, a shared cab into town, a real introduction.
         </Text>
         <View style={{ gap: 10 }}>
-          <Button variant="onPhoto" onPress={() => navigation.replace('Home')}>
+          <Button variant="onPhoto" onPress={() => navigation.replace('MainTabs')}>
             Get started
           </Button>
-          <Button variant="linkOnPhoto" onPress={() => navigation.replace('Home')}>
+          <Button variant="linkOnPhoto" onPress={() => navigation.replace('MainTabs')}>
             I already have an account
           </Button>
         </View>
