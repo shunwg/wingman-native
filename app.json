@@ -4,7 +4,7 @@
     "slug": "wingman-native",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/app-icons/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true
@@ -12,14 +12,18 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "foregroundImage": "./assets/app-icons/android-icon-foreground.png",
+        "backgroundImage": "./assets/app-icons/android-icon-background.png",
+        "monochromeImage": "./assets/app-icons/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/app-icons/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      ["expo-splash-screen", { "image": "./assets/app-icons/splash-icon.png", "imageWidth": 200, "resizeMode": "contain", "backgroundColor": "#eceff4" }]
+    ]
   }
 }
