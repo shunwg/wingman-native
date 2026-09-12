@@ -1,7 +1,14 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
 # dependencies
-node_modules/
+# Anchored to the project root (leading slash) rather than the bare
+# "node_modules/" the template shipped with: Expo's web export mirrors
+# each font/asset's source path under docs/assets/, which for anything
+# from an npm package means docs/assets/node_modules/... — an unanchored
+# rule silently excluded every font file exported that way from every
+# commit, so the deployed site 404'd on all of them despite `expo export`
+# generating them correctly every time.
+/node_modules/
 
 # Expo
 .expo/
