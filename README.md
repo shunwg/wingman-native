@@ -42,22 +42,29 @@ This starts the Expo dev server and prints a QR code in the terminal.
 No Xcode, no Android Studio, no cables required for this. `npm run ios` /
 `npm run android` are also available if you have a simulator installed.
 
-## What's built, and what isn't
+## What's built
 
-Four screens, wired together with real navigation and real motion:
+Thirteen screens, wired together with a real `@react-navigation/bottom-tabs`
+tab bar nested inside a native stack — every tab actually switches, every
+button actually navigates:
 
 | Screen | What it shows |
 |---|---|
 | Welcome | Full-bleed concourse photo, the slow photo-settle entrance |
-| Home | The gate photo band, the journey card, the "hello back" notice, the flagship match card |
+| Home *(tab)* | The gate photo band, the journey card, the "hello back" notice, the flagship match card |
+| Discover *(tab)* | Lens chips (same flight, same terminal, INSEAD, …) filtering the match list |
+| Inbox *(tab)* | Conversation rows grouped by said-yes / new-hellos / waiting |
+| Trips *(tab)* | Upcoming trips, the Fontainebleau shared-car card, ports, circles and events |
+| Profile *(tab, "You")* | Identity, stamps and circles, privacy summary, sign out |
 | Person | The tall photo hero, match reasons, stamps, the Say-hello bottom sheet |
 | Moment | The one choreographed screen — animated route line, staggered reveal |
+| Chat | 1:1 thread with a plan proposal that crossfades pending → confirmed |
+| Car | The Fontainebleau scenario's centerpiece — claim the last seat, cost split, route rail |
+| CarChat | The claimed car's group chat, with a persistent split-cost strip |
+| Event | A circle/event's detail page |
+| Privacy | The reveal-in-steps ladder plus its toggles |
 
-**Not built yet**, on purpose — this was the "core flow" pass, not the whole
-app: Sign up, Discover, Inbox, Chat, Trips, Event, Profile, Privacy. The
-bottom tab bar (`src/design/components/TabBar.tsx`) is a visual stand-in —
-swap it for `@react-navigation/bottom-tabs` once those screens exist; nothing
-about the four built screens needs to change to support that.
+**Not built yet:** Sign up (Welcome's second button is a no-op placeholder).
 
 ## Folder structure
 
@@ -77,20 +84,33 @@ wingman-native/
 │   │   ├── tokens/              Colour, spacing, type, motion — the only
 │   │   │                        place a literal colour or animation curve
 │   │   │                        may be written. Everything imports from here.
-│   │   ├── components/          Avatar, Button, Card, Pill, TabBar, HelloSheet
+│   │   ├── components/          Avatar, Button, Card, Pill, HelloSheet
 │   │   └── icons/                One SVG icon set, one stroke weight
 │   │
 │   ├── screens/                 One folder per screen area
 │   │   ├── welcome/
-│   │   ├── home/
+│   │   ├── home/                    ┐
+│   │   ├── discover/                │
+│   │   ├── inbox/                   ├─ the five bottom-tab screens
+│   │   ├── trips/                   │
+│   │   ├── profile/                 ┘
 │   │   ├── person/
-│   │   └── moment/
+│   │   ├── moment/
+│   │   ├── chat/
+│   │   ├── car/                     ┐ the Fontainebleau shared-car
+│   │   ├── carchat/                 ┘ scenario
+│   │   ├── event/
+│   │   └── privacy/
 │   │
-│   ├── navigation/              Route params + the stack navigator
+│   ├── navigation/              Route params + the tab and stack navigators
+│   │                             (RootNavigator.tsx nests a bottom-tabs
+│   │                             navigator, MainTabs, inside the root stack)
 │   │
-│   └── data/                    Seed content: people, the flagship journey,
-│                                 and the photo asset map (turns an id into
-│                                 a require() — Metro needs static paths)
+│   └── data/                    Seed content: all 16 people, the flagship
+│                                 journey (incl. the Fontainebleau trip and
+│                                 its discover-lens groupings), and the photo
+│                                 asset map (turns an id into a require() —
+│                                 Metro needs static paths)
 │
 └── assets/
     ├── app-icons/               ── EXPO/APP CHROME ──
@@ -110,7 +130,10 @@ wingman-native/
             ├── OSL/               Oslo Gardermoen + Oslo city
             ├── LHR/               London Heathrow + London city
             ├── CPH/               Copenhagen Airport + Copenhagen city
-            └── SIN/               Singapore Changi + the Marina Bay skyline
+            ├── SIN/               Singapore Changi + the Marina Bay skyline
+            └── CDG/               Paris CDG Terminal 2E + Fontainebleau
+                                    chateau and forest road, for the shared-
+                                    car scenario
 ```
 
 ### Adding a new airport's photography
@@ -128,8 +151,14 @@ Ready to scale, as asked. To add a fifth city:
 
 1. `mkdir src/screens/<name>` and write `<Name>Screen.tsx` there, importing
    only from `src/design/` and `src/data/` — never from another screen.
-2. Add its route to `RootStackParamList` in `src/navigation/types.ts`.
-3. Register it in `src/navigation/RootNavigator.tsx`.
+2. Add its route to `RootStackParamList` (or, if it belongs on the bottom
+   tab bar, `MainTabParamList`) in `src/navigation/types.ts`, and use the
+   matching `StackScreenProps<'Name'>` / `TabScreenProps<'Name'>` prop type.
+3. Register it in `src/navigation/RootNavigator.tsx` — a tab screen inside
+   `MainTabs()`'s `<Tab.Navigator>`, everything else as a `<Stack.Screen>`.
+   A screen nested in a tab can still call `navigation.navigate('Person')`
+   etc. directly: React Navigation bubbles an unrecognised route name up to
+   the parent stack automatically, no `getParent()` plumbing needed.
 
 ## Design system
 
@@ -141,8 +170,3 @@ each choice.
 
 **Not carried over from the web prototype:** a dark theme. This is a single,
 deliberately-committed light world, same as the HTML version before it.
-
-## Known limitation of this pass
-
-The bottom tab bar is visual only (see table above) — there is no
-`bottom-tabs` navigator yet, because only Home has a real screen behind it.
