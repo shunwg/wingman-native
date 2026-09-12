@@ -6,7 +6,26 @@ single HTML file. This is a **separate, standalone project**: it does not
 touch or replace the real Wingman web app (`../wingman/`, Vite + React), which
 stays the production codebase.
 
-## Run it on your phone
+## Test it right now, from this link
+
+**[shunwg.github.io/wingman-native](https://shunwg.github.io/wingman-native/)**
+
+Opens the app running in any browser — no install, no phone, no account. It's
+the same React Native code as the phone build below, compiled to web via
+`react-native-web`, so navigation, the Moment screen's animated route line,
+and every screen work the same way. Two things are genuinely different from
+a phone: gestures are mouse/trackpad rather than touch, and animations run on
+JavaScript instead of the native driver, so they're a shade less smooth.
+
+This page rebuilds itself automatically: push a change to `master` and a
+GitHub Action re-exports `docs/` and redeploys within a couple of minutes —
+see `.github/workflows/deploy-pages.yml`. To rebuild it yourself locally:
+
+```bash
+npm run build:pages
+```
+
+## Run it on your phone, for the real thing
 
 ```bash
 npm install
@@ -46,6 +65,12 @@ about the four built screens needs to change to support that.
 wingman-native/
 ├── App.tsx                    Entry point: font loading, navigation root
 ├── app.json                   Expo config
+├── docs/                      The web export GitHub Pages serves — generated,
+│                               never hand-edited; see "Test it right now" above
+├── scripts/
+│   └── fix-web-base-path.js   Rewrites exported asset paths for Pages' subpath
+├── .github/workflows/
+│   └── deploy-pages.yml       Rebuilds docs/ on every push to master
 │
 ├── src/
 │   ├── design/                 ── THE DESIGN TEMPLATE ──

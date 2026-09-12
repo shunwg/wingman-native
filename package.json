@@ -29,7 +29,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build:pages": "expo export --platform web --output-dir docs && node scripts/fix-web-base-path.js && node -e \"require('fs').writeFileSync('docs/.nojekyll','')\""
   },
   "private": true
 }
